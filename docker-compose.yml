@@ -1,0 +1,32 @@
+version: "3.4"
+
+services:
+  order:
+    image: dapr.api.order:latest
+    build:
+      context: .
+      dockerfile: Dap.API.Order/Dockerfile
+    ports:
+      - "5001:80"
+
+  order-dapr:
+    image: daprio/daprd:latest
+    command: ["./daprd", "-app-id", "order", "-app-port", "80"]
+    depends_on:
+      - order
+    network_mode: "service:order"
+
+  product:
+    image: dapr.api.product:latest
+    build:
+      context: .
+      dockerfile: Dap.API.Product/Dockerfile
+    ports:
+      - "5002:80"
+
+  product-dapr:
+    image: daprio/daprd:latest
+    command: ["./daprd", "-app-id", "product", "-app-port", "80"]
+    depends_on:
+      - product
+    network_mode: "service:product"

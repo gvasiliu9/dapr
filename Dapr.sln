@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapr.API.Order", "Dapr.API.Order\Dapr.API.Order.csproj", "{479CBB1A-84CB-49A6-9FA3-7E3538C1BBE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapr.API.Product", "Dapr.API.Product\Dapr.API.Product.csproj", "{24FD36CF-6CFB-4B3F-B363-D6866ACC9212}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{479CBB1A-84CB-49A6-9FA3-7E3538C1BBE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{479CBB1A-84CB-49A6-9FA3-7E3538C1BBE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{479CBB1A-84CB-49A6-9FA3-7E3538C1BBE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{479CBB1A-84CB-49A6-9FA3-7E3538C1BBE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24FD36CF-6CFB-4B3F-B363-D6866ACC9212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24FD36CF-6CFB-4B3F-B363-D6866ACC9212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24FD36CF-6CFB-4B3F-B363-D6866ACC9212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24FD36CF-6CFB-4B3F-B363-D6866ACC9212}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
