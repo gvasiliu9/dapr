@@ -1,2 +1,1 @@
-# dapr
-DAPR with .NET
+# DAPR with .NET
