@@ -1,9 +1,13 @@
+using Dapr.Client;
+using Dapr.Client.Autogen.Grpc.v1;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDaprClient();
 
 var app = builder.Build();
 
@@ -13,29 +17,16 @@ app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Dapr.API.Or
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapGet("/order", async () =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var daprClient = app.Services.GetRequiredService<DaprClient>();
+    var products = await daprClient.InvokeMethodAsync<Product[]>(HttpMethod.Get, "product", "products");
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    return products;
 })
-.WithName("GetWeatherForecast")
+.WithName("Order products")
 .WithOpenApi();
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+record Product(DateOnly Date);
