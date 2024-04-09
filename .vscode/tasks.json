@@ -1,0 +1,46 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "BUILD: Order",
+            "type": "shell",
+            "command": "docker build -t dapr_api_order .",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/Dapr.API.Order"
+            }
+        },
+        {
+            "label": "BUILD: Product",
+            "type": "shell",
+            "command": "docker build -t dapr_api_product .",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/Dapr.API.Product"
+            }
+        },
+        {
+            "label": "DOCKER-COMPOSE: Up",
+            "type": "shell",
+            "command": "docker-compose up -d",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": [
+                "DOCKER-COMPOSE: Down",
+                "BUILD: Order",
+                "BUILD: Product"
+            ]
+        },
+        {
+            "label": "DOCKER-COMPOSE: Down",
+            "type": "shell",
+            "command": "docker-compose down",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        }
+    ],
+}

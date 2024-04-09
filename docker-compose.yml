@@ -2,10 +2,10 @@ version: "3.4"
 
 services:
   order:
-    image: dapr.api.order:latest
+    image: dapr_api_order:latest
     build:
-      context: .
-      dockerfile: Dap.API.Order/Dockerfile
+      context: ./Dapr.API.Order/Dockerfile
+      target: debug
     ports:
       - "5001:80"
 
@@ -17,10 +17,10 @@ services:
     network_mode: "service:order"
 
   product:
-    image: dapr.api.product:latest
+    image: dapr_api_product:latest
     build:
-      context: .
-      dockerfile: Dap.API.Product/Dockerfile
+      context: ./Dapr.API.Product/Dockerfile
+      target: debug
     ports:
       - "5002:80"
 
