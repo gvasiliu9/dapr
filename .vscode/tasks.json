@@ -37,6 +37,16 @@
             "label": "DOCKER-COMPOSE: Down",
             "type": "shell",
             "command": "docker-compose down",
+            "dependsOn": "DOCKER: Prune",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "DOCKER: Prune",
+            "type": "shell",
+            "command": "docker image prune -f",
             "problemMatcher": [],
             "options": {
                 "cwd": "${workspaceFolder}"

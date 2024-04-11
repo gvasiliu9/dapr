@@ -4,29 +4,64 @@ services:
   order:
     image: dapr_api_order:latest
     build:
-      context: ./Dapr.API.Order/Dockerfile
+      context: ./Dapr.API.Order
       target: debug
     ports:
       - "5001:80"
+    volumes:
+      - ./Dapr/Components:/components
 
   order-dapr:
     image: daprio/daprd:latest
-    command: ["./daprd", "-app-id", "order", "-app-port", "80"]
+    command:
+      [
+        "./daprd",
+        "-app-id",
+        "order",
+        "-app-port",
+        "80",
+        "--components-path",
+        "/components",
+      ]
     depends_on:
       - order
+      - redis
     network_mode: "service:order"
+    volumes:
+      - ./Dapr/Components:/components
 
   product:
     image: dapr_api_product:latest
     build:
-      context: ./Dapr.API.Product/Dockerfile
+      context: ./Dapr.API.Product
       target: debug
     ports:
       - "5002:80"
+    volumes:
+      - ./Dapr/Components:/components
 
   product-dapr:
     image: daprio/daprd:latest
-    command: ["./daprd", "-app-id", "product", "-app-port", "80"]
+    command:
+      [
+        "./daprd",
+        "-app-id",
+        "product",
+        "-app-port",
+        "80",
+        "--components-path",
+        "/components",
+      ]
     depends_on:
       - product
+      - redis
     network_mode: "service:product"
+    volumes:
+      - ./Dapr/Components:/components
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=123456

@@ -1,5 +1,4 @@
 using Dapr.Client;
-using Dapr.Client.Autogen.Grpc.v1;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +18,19 @@ app.UseHttpsRedirection();
 
 app.MapGet("/order", async () =>
 {
+    // Call product API
     var daprClient = app.Services.GetRequiredService<DaprClient>();
     var products = await daprClient.InvokeMethodAsync<Product[]>(HttpMethod.Get, "product", "products");
+
+    // Save state
+    await daprClient.SaveStateAsync("statestore", "test", 1);
+    var value = await daprClient.GetStateAsync<int>("statestore", "test");
+
+    // Publish event
+    // ...
+
+    // Subscribe to event
+    // ...
 
     return products;
 })
