@@ -1,4 +1,5 @@
 using Dapr.Client;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,7 +52,7 @@ app.MapGet("/get-state", async (string key) =>
 app.MapPost("/publish-event", async (string message) =>
 {
     using var client = new DaprClientBuilder().Build();
-    await client.PublishEventAsync("redis-pubsub", "orders", new { Data = new { Value = message } });
+    await client.PublishEventAsync("redis-pubsub", "orders", new { Message = message });
 })
 .WithName("Publish event")
 .WithOpenApi();
@@ -59,9 +60,10 @@ app.MapPost("/publish-event", async (string message) =>
 // Subscribe to event
 app.MapSubscribeHandler();
 
-app.MapPost("/orders", (Event @event) =>
+app.MapPost("/orders", (Event message) =>
 {
-    Console.WriteLine($"Received event: {@event.Data.Value}");
+    var json = System.Text.Json.JsonSerializer.Serialize(message);
+    Console.WriteLine($"Received event: {message.Data}");
 })
 .WithTopic("redis-pubsub", "orders")
 .WithName("orders")
@@ -71,6 +73,12 @@ await app.RunAsync();
 
 record Product(DateOnly Date);
 
-public record Event(string Id, string Source, string Specversion, string Type, string Datacontenttype, Message Data, string Subject, string Topic, string Pubsubname);
-
-public record Message(string Value);
+public record Event(string Id,
+                    string Source,
+                    string Specversion,
+                    string Type,
+                    string Datacontenttype,
+                    object Data,
+                    string Subject,
+                    string Topic,
+                    string Pubsubname);
