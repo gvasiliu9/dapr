@@ -8,8 +8,6 @@ services:
       target: debug
     ports:
       - "5001:80"
-    volumes:
-      - ./Dapr/Components:/components
 
   order-dapr:
     image: daprio/daprd:latest
@@ -22,6 +20,8 @@ services:
         "80",
         "--components-path",
         "/components",
+        "--app-protocol",
+        "http",
       ]
     depends_on:
       - order
@@ -37,8 +37,6 @@ services:
       target: debug
     ports:
       - "5002:80"
-    volumes:
-      - ./Dapr/Components:/components
 
   product-dapr:
     image: daprio/daprd:latest

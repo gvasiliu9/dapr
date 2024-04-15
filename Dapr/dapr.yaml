@@ -1,0 +1,12 @@
+version: 1
+common:
+  resourcesPath: ./Components/
+apps:
+  - appID: order
+    appDirPath: ../Dapr.API.Order/
+    appPort: 5001
+    command: ["dotnet", "run"]
+  - appID: product
+    appDirPath: ../Dapr.API.Product/
+    appPort: 5002
+    command: ["dotnet", "run"]

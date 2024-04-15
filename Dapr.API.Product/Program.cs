@@ -1,3 +1,7 @@
+using System.Diagnostics;
+using Dapr;
+using Dapr.Client;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -29,3 +33,5 @@ app.MapGet("/products", () =>
 app.Run();
 
 record Product(string Name);
+
+record Event(Guid Id, string Message);
