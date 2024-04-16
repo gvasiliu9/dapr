@@ -10,3 +10,5 @@ spec:
     value: "redis:6379"
   - name: redisPassword
     value: "123456"
+  - name: actorStateStore
+    value: "true"

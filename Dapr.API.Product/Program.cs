@@ -1,5 +1,8 @@
 using System.Diagnostics;
 using Dapr;
+using Dapr.Actors;
+using Dapr.Actors.Client;
+using Dapr.API.Product.Actors;
 using Dapr.Client;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,9 +28,21 @@ app.MapGet("/products", () =>
             $"Product {index}"
         ))
         .ToArray();
+
     return products;
 })
 .WithName("Get products")
+.WithOpenApi();
+
+app.MapGet("/invoke-order-actor", async () =>
+{
+    var actorType = "OrderActor";
+    var actorId = new ActorId("1");
+
+    var proxy = ActorProxy.Create<IOrderActor>(actorId, actorType);
+    await proxy.Scan();
+})
+.WithName("Invoke OrderActor")
 .WithOpenApi();
 
 app.Run();

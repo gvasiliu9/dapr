@@ -1,3 +1,4 @@
+using Dapr.API.Order.Actors;
 using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDaprClient();
 builder.Services.AddControllers();
+builder.Services.AddActors(options =>
+{
+    // Register actor types and configure actor settings
+    options.Actors.RegisterActor<OrderActor>();
+
+    options.ReentrancyConfig = new Dapr.Actors.ActorReentrancyConfig()
+    {
+        Enabled = true,
+        MaxStackDepth = 32,
+    };
+});
 
 var app = builder.Build();
 
@@ -16,6 +28,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Dapr.API.Order v1"));
 
+app.MapActorsHandlers();
 
 // Get products
 app.MapGet("/order", async () =>
