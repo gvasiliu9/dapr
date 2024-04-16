@@ -23,6 +23,8 @@ app.MapGet("/order", async () =>
     var daprClient = app.Services.GetRequiredService<DaprClient>();
     var products = await daprClient.InvokeMethodAsync<Product[]>(HttpMethod.Get, "product", "products");
 
+    Console.WriteLine($"Received products: {products.Length}");
+
     return products;
 })
 .WithName("Get products")
@@ -33,6 +35,8 @@ app.MapPost("/save-state", async (string key, string value) =>
 {
     var daprClient = app.Services.GetRequiredService<DaprClient>();
     await daprClient.SaveStateAsync("statestore", key, value);
+
+    Console.WriteLine($"Saved state: {key} = {value}");
 })
 .WithName("Save state")
 .WithOpenApi();
@@ -42,6 +46,8 @@ app.MapGet("/get-state", async (string key) =>
 {
     var daprClient = app.Services.GetRequiredService<DaprClient>();
     var value = await daprClient.GetStateAsync<string>("statestore", key);
+
+    Console.WriteLine($"Received state: {key} = {value}");
 
     return value;
 })
@@ -53,6 +59,8 @@ app.MapPost("/publish-event", async (string message) =>
 {
     using var client = new DaprClientBuilder().Build();
     await client.PublishEventAsync("redis-pubsub", "orders", new { Message = message });
+
+    Console.WriteLine($"Published event: {message}");
 })
 .WithName("Publish event")
 .WithOpenApi();

@@ -20,6 +20,8 @@ services:
         "80",
         "--components-path",
         "/components",
+        "--config",
+        "/components/daprConfig.yaml",
         "--app-protocol",
         "http",
       ]
@@ -49,6 +51,8 @@ services:
         "80",
         "--components-path",
         "/components",
+        "--config",
+        "/components/daprConfig.yaml",
       ]
     depends_on:
       - product
@@ -63,3 +67,8 @@ services:
       - "6379:6379"
     environment:
       - REDIS_PASSWORD=123456
+
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
